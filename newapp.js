@@ -39,7 +39,7 @@ const sentences = [
   "Too ato too",
   "oat",
   "itant",
-  "nee ene ate ite tent tiet ent ine ene ete ene ate ete ene ateete ene ateete ene ate"
+  "nee ene ate ite tent tiet ent ine ene ete ene ate ete"
 ];
 
 // setting starter parameters
@@ -78,6 +78,10 @@ $(document).keypress(function(e) {
     console.log("no more characters");
     sentenceCounter++;
     letterCounter = 0;
+    let currentSentence = sentences[sentenceCounter];
+    let nextLetter = sentences[sentenceCounter][letterCounter];
+    $("#sentence").text(currentSentence);
+    $("#target-letter").text(nextLetter);
     $("#yellow-block").removeAttr("style");
     $("#feedback").text("");
   }
