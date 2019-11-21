@@ -34,31 +34,27 @@ $(document).on("keypress", function(e) {
 
 // SENTENCES, LETTERS AND YELLOW POINTER
 
-const sentences = [
-  "ten ate",
-  "Too ato too",
-  "oat",
-  "itant",
-  "nee ene ate ite tent tiet ent ine ene ete ene ate ete"
-];
+const sentences = ["ten ate", "Too ato too", "oat ate"]; //, "itant TeNt", "nee ene"];
 
 // setting starter parameters
-let letterCounter = 0;
-let sentenceCounter = 0;
-let currentSentence = sentences[sentenceCounter];
-let currentLetter = sentences[sentenceCounter][letterCounter];
+var letterCounter = 0;
+var sentenceCounter = 0;
+var currentSentence = sentences[sentenceCounter];
+var currentLetter = sentences[sentenceCounter][letterCounter];
+var numberOfMistakes = 0;
+var startFrom = new Date().getTime();
 
 $("#sentence").text(currentSentence); //set first sentence
 $("#target-letter").text(currentLetter); //set first letter
 
 $(document).keypress(function(e) {
   // setting parameters after key is pressed
-  let keyPressed = String.fromCharCode(e.which);
-  let currentSentence = sentences[sentenceCounter];
-  let currentLetter = sentences[sentenceCounter][letterCounter];
-  let nextLetter = sentences[sentenceCounter][letterCounter + 1];
+  var keyPressed = String.fromCharCode(e.which);
+  var currentSentence = sentences[sentenceCounter];
+  var currentLetter = sentences[sentenceCounter][letterCounter];
+  var nextLetter = sentences[sentenceCounter][letterCounter + 1];
 
-  if (nextLetter != undefined) {
+  if (nextLetter !== undefined) {
     // as long as there is letters in the sentence
     $("#sentence").text(currentSentence);
     $("#target-letter").text(nextLetter);
@@ -69,21 +65,34 @@ $(document).keypress(function(e) {
       addGlyphIconOK();
     } else {
       addGlyphIconWrong();
+      numberOfMistakes++;
     }
     // counting letters;
     letterCounter++;
 
     // if there is no more letters, reset parameters and move to next sentence
   } else {
-    console.log("no more characters");
     sentenceCounter++;
     letterCounter = 0;
-    let currentSentence = sentences[sentenceCounter];
-    let nextLetter = sentences[sentenceCounter][letterCounter];
+    var currentSentence = sentences[sentenceCounter];
+    if (sentenceCounter > sentences.length) {
+      console.log("END");
+    }
     $("#sentence").text(currentSentence);
     $("#target-letter").text(nextLetter);
     $("#yellow-block").removeAttr("style");
     $("#feedback").text("");
+    // if no more sentences, show results
+    if (currentSentence == undefined) {
+      var minutes = (new Date().getTime() - startFrom) / 60000;
+      console.log(minutes);
+      var wordsPerMinutes = Math.round((7 / minutes - 2 * numberOfMistakes) * 10) / 10;
+      Swal.fire(
+        "Words per minutes: " + wordsPerMinutes,
+        "Number of errors: " + numberOfMistakes,
+        "info"
+      );
+    }
   }
 });
 
