@@ -24,7 +24,7 @@ $(document).on("keypress", function(e) {
   var keyPressed = e.which;
   $(`#${keyPressed}`).css({
     backgroundColor: "yellow"
-  });
+  }); 
   $(document).on("keyup", function() {
     $(`#${keyPressed}`).css({
       backgroundColor: "#f5f5f5"
